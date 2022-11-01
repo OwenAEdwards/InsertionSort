@@ -1,0 +1,88 @@
+1.) starting from the second (assuming we start at one) element of the (presumably unsorted) data structure, we compare each
+element in the data structure to its previous elements to check if they are less than the current element
+2.) if the current element is less than any of the previous elements, we swap their positions in the data structure and the new
+current element becomes the next element in the data structure (the old current element is considered "sorted")
+3.) we continue sorting through the data structure until we've checked every element from start to finish AND compared all 
+every current element with the previous elements in the data structure 
+
+Real-life example:
+tailors arrange shirts in a cupboard sorted by order size to easier find the shirt size they're looking for, if they add a new 
+shirt size into the cupboard, they would have to compare that shirt size with all previous ("sorted") shirt sizes before stopping
+once they determine the shirt size is no longer less than the current shirt they're comparing with, adding the shirt in at that
+position ("index")
+
+Another real-life example:
+holding several cards in your hand in order so you know your "hand of cards" when you pull another card from the deck, you want 
+to add this card in-order with the rest of them so you compare each card with the current card you pulled from the deck until you
+stop comparing once the card you pulled is no longer less than the cards in your hand that you're comparing it with
+
+Example:
+
+[7, 3, 1, 2, 4, 6] (3<7)
+ ^  ^
+ |  |
+swap start
+
+[3, 7, 1, 2, 4, 6] (1<7)
+    ^  ^
+    |  |
+ swap  start
+
+[3, 1, 7, 2, 4, 6] (1<3)
+ ^  ^
+ |  |
+swap start
+
+[1, 3, 7, 2, 4, 6] (2<7)
+       ^  ^
+       |  |
+    swap  start
+
+[1, 3, 2, 7, 4, 6] (2<3)
+    ^  ^
+    |  |
+swap  start
+
+[1, 2, 3, 7, 4, 6] (4<7)
+          ^  ^
+          |  |
+       swap  start
+
+[1, 2, 3, 4, 7, 6] (6<7)
+             ^  ^
+             |  |
+          swap  start
+
+[1, 2, 3, 4, 6, 7]
+
+Pseudo-code algorithm:
+InsertionSort(Arr,N) {
+    // we begin with data structure, Arr, and the size of the data structure, N
+    // we want to loop through every element except the first (because we won't have anything to compare the 0th element with) in
+    // the Arr data structure so we go from 1 to the size of the data structure, N
+    for (i=1;i<N;i++) {
+        // since we have i++ (incrementing by 1), i being our current "unsorted" index, we will set i equal to j, where j will be
+        // the index of all previous "sorted" elements that we want to check against our current element 
+        j=i;
+        // while the element of a "sorted" index we're comparing j is greater than 0 (within the Arr data structure) AND the
+        // previous element j-1 of the data structure is greater than j, we continue to compare backwards after each swap
+        while (j>0&&Arr[j-1]>Arr[j]) {
+            // we swap every "sorted" element at Arr[j-1] with our "unsorted" Arr[j] while Arr[j-1] is still larger
+            swap(Arr[j-1],Arr[j]);
+            // we decrement through index j while our "unsorted" A[j] still remains "unsorted"
+            j--;
+        }
+    }
+}
+
+Theory:
+-Since we compare every element in the data structure within the first for-loop, we will have an Ω(N) time complexity as the 
+best-case for the Selection Sort algorithm, this assumes we ONLY have to make comparisons in constant time complexity Ω(1) within
+the nested while-loop (meaning the data structure is already sorted and we only make comparisons within the for-loop) and thus 
+our swaps run in constant time complexity O(1), this again being the best-case
+-However, our average-case and worst-case time complexities for the Selection Sort algorithm tend toward O(N^2) comparisons (an
+approximation for (N(N-1)/2)-1 ) AND swaps within the nested loops, the worst-case assuming each for EVERY index i we check
+comparisons for, the index for which j is less than j-1 is at the furthest point to which j>0 is true, meaning the list we're
+sorting in ascending order is alredy sorted in descending order
+-The worst-case space compelxity of the Selection Sort algorithm is O(1) since we swap the data structure using pass by reference
+and we only work within one single data structure the whole time
